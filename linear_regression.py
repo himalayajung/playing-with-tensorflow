@@ -3,7 +3,7 @@ import numpy as np
 
 slope = 5
 xx = np.linspace(-1, 1, 20)
-yy = slope*xx + np.random.randn(1, 20)*0.01
+yy = slope*xx + np.random.randn(*xx.shape)*0.01
 
 # Create place holders (symbolic variables)
 # Inserts a placeholder for a tensor that will be always fed.
@@ -26,7 +26,7 @@ def model(X, w):
 # variable to the graph by constructing an instance of the class `Variable`.
 
 w = tf.Variable(0.0, name="weights")  # create a shared variable (like theano.shared) for the weight matrix
-yf = model(X, w)
+yf = model(X, w) # fitted values
 
 cost = tf.pow(Y-yf, 2)  # cost function = sum of squares
 
@@ -36,7 +36,7 @@ sess = tf.Session()
 init = tf.initialize_all_variables()  # initialize W
 sess.run(init)
 
-for i in range(10):
+for i in range(50):
     for (x, y) in zip(xx, yy):
         sess.run(train_op, feed_dict={X: x, Y: y})
 
